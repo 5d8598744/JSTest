@@ -1,14 +1,81 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<!-- <link rel="stylesheet" type="text/css" href=""> -->
+
 	<style type="text/css">
+
+		/*General Styles*/
+		body, h1, p, div, input, form, h2, button { padding: 0; margin: 0; border: 0; box-sizing: border-box;}
+		body { background: #fff; font-family: Arial, sans-serif; color: #0D5146 }
+		h1 { font-size: 2em;}
+		.flex { display: flex; }
+		.flex-col { flex-direction: column; }
+
+		/*Header*/
+		.header { background-color: #eeeeee; padding: 5px 10px; }
+
+		/*First Block*/
+		.form-block { padding:0px 10px; }
+		.form-block_t { font-size: 14px; margin: 15px 0px; max-width: 500px; position: relative;}
+		.hint { color: orange; cursor: pointer; transition: color .3s}
+		.hint_p { color: #0D5146; background: #eee; box-sizing: border-box; width: max-content; transform: scale(0); opacity: .9; padding: 10px 10px; border-radius: 3px; font-size: 11px; position: absolute; bottom: -12px; right: 10px; transition: all .1s;}
+		.showHint { transform: scale(1); }
+		.key { color: orange }
+
+		/*Drag & Drop Block*/
+		.drop-area { border: 3px #ccc dashed; border-radius: 3px; max-width: 500px; padding: 10px; }
+
+		.button { color: inherit; font-weight: 700; font-size: 14px; text-transform: uppercase; background: #eeeeee; transition: background ease .5s; margin-bottom: 10px; padding: 10px 15px; align-self: flex-start; cursor: pointer; transition: background 300ms;}
+		#file { display: none; }	
+		.highlight { border-color: orange; }
 		
+		.gallery { display: grid; grid-template-columns: repeat(auto-fill, 150px); grid-gap: 10px; }
+		.img-prev { width: 150px; max-height: 150px; }
+		.pdf-prev { box-sizing: border-box; text-align: center; padding: 10px 0px; }
+
+		/*Hover*/
+		.hint:hover { color: #996300 }
+		.button:hover { background: #d9d9d9; }
 	</style>
-	<link rel="stylesheet" type="text/css" href="">
+
+
+	<script defer type="text/javascript" src="main.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script> -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>JS Test</title>
+    <meta name="keywords" content=""> 
+    <meta name="description" content="">
+    <meta name="author" content="Rostyslav">
 </head>
 <body>
-		
-	<script type="text/javascript" src="main.js"></script>
+	<div class="header">
+		<h1 class="t1">JS Drag &amp; Drop</h1>	
+	</div>
+	<div class="form-block">
+		<h2 class="form-block_t">
+			Upload your files with the file dialog or by dragging &amp; dropping images onto the dashed field below. 
+			<sup class="hint">?</sup>
+			<p class="hint_p">permitted file extensions: 
+				<span class="key">.png</span>,
+				<span class="key">.jpeg</span>,
+				<span class="key">.jpg</span>,
+				<span class="key">.gif</span>,
+				<span class="key">.pdf</span>
+			</p>
+		</h2>
+		<div class="drop-area">
+		  <form class="form flex flex-col" method="POST" action="/files">
+		    <input type="file" id="file" multiple accept="image/jpg, image/jpeg, image/png, image/gif, application/pdf" onchange="checkFiles(this.files)">
+		    <label class="button" for="file">Upload</label>
+		  </form>	
+		  <div class="gallery"></div>
+		</div>
+	</div>
 </body>
 </html>
