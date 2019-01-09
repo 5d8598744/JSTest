@@ -7,10 +7,8 @@ var doc   = document,
 	hintMark = doc[query](".hint"),
 	hintClass  = "showHint",
 	dropArea = doc[query](".drop-area"),
-	g = doc[query](".gallery");
-
-
-
+	g = doc[query](".gallery"), // div for thumbnails
+	uploaded = []; // holds all uploaded files' name to prevent uploading the same files
 
 // Hint
 hintMark[event]("mouseover", showHint, false);
@@ -73,10 +71,11 @@ function unhighlight(e) {
 }
 
 function drop(e) {
-	var dt = e.dataTransfer,
-		files = Array.prototype.slice.call(dt.files);
+	var dt = e.dataTransfer, // a DT Obj has files property that contains the data is being draged
+		files = Array.prototype.slice.call(dt.files); // transforms FileList to Array
 
-	for(var i = 0; i < files.length; i++) {	
+	// Validates a file's type
+	for(var i = 0; i < files.length; i++) { 
 		var f = files[i];
 		if((f.type.indexOf("application") < 0 || f.type.indexOf("image") < 0) && !f.type.match(/pdf|jpeg|gif|jpg|png/gi)) {
 			files.splice(i, 1);
@@ -87,9 +86,9 @@ function drop(e) {
 
 function checkFiles(files) {
 	if(!files.length) return;
-	var XHR = ("onload" in new XMLHttpRequest() ? XMLHttpRequest: XDomainRequest),
+	var XHR = ("onload" in new XMLHttpRequest() ? XMLHttpRequest: XDomainRequest), // For IE8-
 		xhr = new XHR(),
-		url = "/files";		
+		url = "/files";
 
 	for (var i = 0; i < files.length; i++) {
 		var f = files[i],
@@ -97,7 +96,10 @@ function checkFiles(files) {
 			reader = new FileReader(),
 			json;
 
+		// exp >> 11 line
+		if(uploaded.indexOf(f.name) >= 0) {continue;} else {uploaded.push(f.name);}
 
+		// determines a container DOM element based on file's type
 		if(f.type.indexOf("pdf") >= 0) {
 			el = doc.createElement("i");
 			el.classList.add("pdf-prev", "far", "fa-5x", "fa-file-pdf");
@@ -109,8 +111,9 @@ function checkFiles(files) {
 		}
 
 		g.appendChild(el);
+		// if element is img set url to a src attr asynchronously
 	    reader.onload = (function(elm) { return function(e) {if(elm.nodeName === "IMG") elm.src = e.target.result; }; })(el);
-	    reader.readAsDataURL(f);
+	    reader.readAsDataURL(f); // reads a file's url 
 
 		xhr.open("POST", url, true);
 
@@ -121,6 +124,7 @@ function checkFiles(files) {
 				console.log("err " + xhr.status);
 			}
 		});
+		// form JSON and sand it to server
 		json = {
 		  'lastModified'     : f.lastModified,
 		  'lastModifiedDate' : f.lastModifiedDate,
