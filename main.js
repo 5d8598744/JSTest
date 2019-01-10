@@ -102,11 +102,11 @@ function checkFiles(files) {
 		// determines a container DOM element based on file's type
 		if(f.type.indexOf("pdf") >= 0) {
 			el = doc.createElement("i");
-			el.classList.add("pdf-prev", "far", "fa-5x", "fa-file-pdf");
+			el.classList.add("pdf-prev", "far", "fa-5x", "fa-file-pdf", "appear");
 			el.file = file;
 		} else {
 			el = doc.createElement("img");
-			el.classList.add("img-prev");
+			el.classList.add("img-prev", "appear");
 			el.file = file;	
 		}
 

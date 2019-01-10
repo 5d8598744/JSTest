@@ -35,6 +35,16 @@
 		.gallery { display: grid; grid-template-columns: repeat(auto-fill, 150px); grid-gap: 10px; }
 		.img-prev { width: 150px; max-height: 150px; }
 		.pdf-prev { box-sizing: border-box; text-align: center; padding: 10px 0px; }
+		.appear { animation: appear 300ms linear; }
+
+		@keyframes appear {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
 
 		/*Hover*/
 		.hint:hover { color: #996300 }
